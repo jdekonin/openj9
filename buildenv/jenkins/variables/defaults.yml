@@ -257,8 +257,12 @@ s390x_linux:
     11: 'linux-s390x-normal-server-release'
   node_labels:
     build: 'ci.role.build && hw.arch.s390x && sw.os.rhel.7'
+  extra_configure_options:
+    11: '--with-toolchain-type=clang'
   build_env:
-    cmd: 'source /home/jenkins/set_gcc7.5.0_env'
+    cmd: 'source /opt/rh/llvm-toolset-7/enable'
+    vars:
+      11: 'PATH=CC=clang CXX=clang++'
 #========================================#
 # Linux S390 64bits Compressed Pointers /w cmake
 #========================================#
