@@ -44,7 +44,7 @@ if ("${OS}" == "unknown" || !(validArch.contains(ARCH))) {
 def BUILD_OPTS = ""
 if ("${OS}" == "centos6") {
     if ("${ARCH}" == "x86") {
-        BUILD_OPTS = "--dist=centos --version=6.10 --cuda"
+        BUILD_OPTS = "--dist=centos --version=6 --cuda"
     }
 } else if ("${OS}" == "centos7") {
     if ("${ARCH}" == "ppc64le" || "${ARCH}" == "x86") {
@@ -64,7 +64,7 @@ if ("${BUILD_OPTS}" == "") {
 def NODE = (params.NODE) ? params.NODE : "sw.tool.docker && hw.arch.${ARCH}"
 def NAMESPACE = (params.NAMESPACE) ? params.NAMESPACE : "eclipseopenj9"
 def FOLDER = (params.FOLDER) ? "/" + params.FOLDER : ""
-def REPOSITORY = "${NAMESPACE}${FOLDER}/openj9-jenkins-agent-${ARCH}-${OS}"
+def REPOSITORY = "${NAMESPACE}${FOLDER}/jenkins-agent-${ARCH}-${OS}"
 
 timeout(time: 5, unit: 'HOURS') {
     timestamps {

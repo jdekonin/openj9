@@ -230,9 +230,6 @@ if [ $version = 6 ] ; then
   echo ""
 fi
   echo "RUN yum -y update \\"
-if [ $version = 6 ] ; then
-  echo " && yum -y install https://repo.ius.io/ius-release-el6.rpm \\"
-fi
   echo " && yum -y install \\"
   echo "    alsa-lib-devel \\"
   echo "    automake \\" # required to update make
