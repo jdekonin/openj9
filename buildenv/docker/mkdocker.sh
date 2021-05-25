@@ -223,6 +223,12 @@ fi
 }
 
 install_centos_packages() {
+if [ $version = 6.10 ] ; then
+  echo "RUN sed -i -e 's|mirrorlist|#mirrorlist|' \\"
+  echo "           -e 's|#baseurl=http://mirror.centos.org/centos/\$releasever|baseurl=https://vault.centos.org/6.10|' \\"
+  echo "           /etc/yum.repos.d/CentOS-Base.repo"
+  echo ""
+fi
   echo "RUN yum -y update \\"
 if [ $version = 6.10 ] ; then
   echo " && yum -y install https://repo.ius.io/ius-release-el6.rpm \\"
