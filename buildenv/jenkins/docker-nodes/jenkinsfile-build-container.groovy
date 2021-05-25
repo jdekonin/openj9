@@ -42,9 +42,9 @@ if ("${OS}" == "unknown" || !(validArch.contains(ARCH))) {
 }
 
 def BUILD_OPTS = ""
-if ("${OS}" == "centos6.9") {
+if ("${OS}" == "centos6.10") {
     if ("${ARCH}" == "x86") {
-        BUILD_OPTS = "--dist=centos --version=6.9"
+        BUILD_OPTS = "--dist=centos --version=6.10 --cuda"
     }
 } else if ("${OS}" == "centos7") {
     if ("${ARCH}" == "ppc64le" || "${ARCH}" == "x86") {

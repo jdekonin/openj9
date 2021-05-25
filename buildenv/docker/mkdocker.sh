@@ -37,12 +37,12 @@ usage() {
   echo "  --print        write the Dockerfile to stdout (default; overrides '--build')"
   echo "  --tag=...      specify a name for the docker image (may be repeated, default: none)"
   echo "  --user=...     specify the user name (default: 'jenkins')"
-  echo "  --version=...  specify the distribution version (e.g. 6.9, 16.04)"
+  echo "  --version=...  specify the distribution version (e.g. 6.10, 16.04)"
   echo ""
   local arch="$(uname -m)"
   echo "Supported build patterns on this host ($arch):"
 if [ $arch = x86_64 ] ; then
-  echo "  bash mkdocker.sh --tag=openj9/cent69 --dist=centos --version=6.9 --build"
+  echo "  bash mkdocker.sh --tag=openj9/cent610 --dist=centos --version=6.10 --build"
 fi
 if [ $arch = x86_64 -o $arch = ppc64le ] ; then
   echo "  bash mkdocker.sh --tag=openj9/cent7  --dist=centos --version=7   --build"
@@ -125,9 +125,9 @@ validate_options() {
         exit 1
       fi
       case $version in
-        6.9)
+        6.10)
           if [ $arch = ppc64le ] ; then
-            echo "CentOS version 6.9 is not supported on $arch" >&2
+            echo "CentOS version 6.10 is not supported on $arch" >&2
             exit 1
           fi
           ;;
@@ -224,7 +224,7 @@ fi
 
 install_centos_packages() {
   echo "RUN yum -y update \\"
-if [ $version = 6.9 ] ; then
+if [ $version = 6.10 ] ; then
   echo " && yum -y install https://repo.ius.io/ius-release-el6.rpm \\"
 fi
   echo " && yum -y install \\"
