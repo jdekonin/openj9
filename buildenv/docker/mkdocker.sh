@@ -60,6 +60,7 @@ cuda=no
 dist=unspecified
 tags=()
 user=jenkins
+userid=1000
 version=unspecified
 
 # Frequently used commands.
@@ -535,12 +536,16 @@ prepare_user() {
 create_user() {
   echo ""
   echo "# Add user home and copy authorized_keys and known_hosts."
-  echo "RUN useradd -ms /bin/bash $user \\"
+  echo "RUN useradd -ms /bin/bash --uid $userid $user \\"
   echo " && mkdir /home/$user/.ssh \\"
   echo " && chmod 700 /home/$user/.ssh"
   echo "COPY authorized_keys known_hosts /home/$user/.ssh/"
+  echo "RUN chmod 600 /home/$user/.ssh/authorized_keys /home/$user/.ssh/known_hosts \\"
+  echo " && echo "ulimit -n 2048 -u 32000" >> /home/$user/.bashrc"
+}
+
+adjust_user_directory_perms() {
   echo "RUN chown -R $user:$user /home/$user \\"
-  echo " && chmod 600 /home/$user/.ssh/authorized_keys /home/$user/.ssh/known_hosts"
 }
 
 install_freemarker() {
@@ -556,11 +561,7 @@ install_freemarker() {
 
 bootjdk_dirs() {
   for version in $@ ; do
-    if [ $version = 8 ] ; then
-      echo /usr/lib/jvm/adoptojdk-java-80
-    else
-      echo /usr/lib/jvm/adoptojdk-java-$version
-    fi
+    echo /home/$user/bootjdks/jdk$version
   done
 }
 
@@ -615,7 +616,7 @@ install_python() {
 adjust_ldconfig() {
   echo ""
   echo "# Run ldconfig to discover newly installed shared libraries."
-  echo "RUN for dir in lib lib64 ; do echo /usr/local/$dir ; done > /etc/ld.so.conf.d/usr-local.conf \\"
+  echo "RUN for dir in lib lib64 ; do echo /usr/local/\$dir ; done > /etc/ld.so.conf.d/usr-local.conf \\"
   echo " && ldconfig"
 }
 
@@ -674,7 +675,7 @@ print_dockerfile() {
 if [ $cuda != no ] ; then
   install_cuda
 fi
-  install_freemarker
+  #install_freemarker
 
   install_compilers
 
@@ -686,6 +687,7 @@ fi
 
   install_bootjdks
   create_git_cache
+  adjust_user_directory_perms
 }
 
 main() {
